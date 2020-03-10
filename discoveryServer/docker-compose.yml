@@ -1,0 +1,84 @@
+version: "1.24.1"
+services:
+  discoveryserver:
+      container_name: discoveryserver:1.0
+      image: 
+            yankitchauhan/discoveryserver
+      expose: 
+          - 8761
+      ports:
+          - "8761:8761"
+  apigateway:
+      container_name: apigateway
+      image: 
+            yankitchauhan/apigateway:1.0
+      expose:
+          - 9999
+      ports:
+          - "9999:9999"
+      depends_on:
+          - discoveryserver
+  delivery:
+      container_name: delivery
+      image: 
+            yankitchauhan/delivery:1.0
+      expose:
+          - 8063
+      ports:
+          - "8063:8063"
+      depends_on:
+          - discoveryserver
+  payments:
+      container_name: payments
+      image: 
+            yankitchauhan/payments:1.0
+      expose:
+          - 8066
+      ports:
+          - "8066:8066"
+      depends_on:
+          - discoveryserver
+  products:
+      container_name: products
+      image: 
+            yankitchauhan/products:1.0
+      expose:
+          - 8040
+      ports:
+          - "8040:8040"
+      depends_on:
+          - discoveryserver
+          - prices
+          - stock
+  prices:
+      container_name: prices
+      image: 
+            yankitchauhan/prices:1.0
+      expose:
+          - 8060
+      ports:
+          - "8060:8060"
+      depends_on:
+          - discoveryserver
+  stock:
+      container_name: stock
+      image: 
+            yankitchauhan/stock:1.0
+      expose:
+          - 8062
+      ports:
+          - "8062:8062"
+      depends_on:
+          - discoveryserver
+  orders:
+      container_name: orders
+      image: 
+            yankitchauhan/orders:1.0
+      expose:
+          - 8064
+      ports:
+          - "8064:8064"
+      depends_on:
+          - discoveryserver
+          - products
+          - payments
